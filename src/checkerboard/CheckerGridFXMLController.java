@@ -14,6 +14,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -41,6 +43,27 @@ public class CheckerGridFXMLController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         DefaultColorScheme();
         setDefaultBoardSize();
+    }
+        private void drawBoard() {     
+        double sceneWidth = scene.getWidth();
+        double sceneHeight = scene.getHeight();
+        double horizontalPadding = 0.0;
+        double verticalPadding = 0.0;
+        
+        if (sceneWidth > sceneHeight) {
+            boardSize = sceneHeight;
+            horizontalPadding = (sceneWidth - boardSize) / 2;
+            verticalPadding = 0.0;
+        } else {
+            boardSize = sceneWidth;
+            verticalPadding = (sceneHeight - boardSize) / 2;
+            horizontalPadding = 0.0;
+        }
+        
+        stackPane.setPadding(new Insets(verticalPadding, horizontalPadding, verticalPadding, horizontalPadding));
+        stackPane.getChildren().clear();
+        checkerBoard = new Grid(numRowsColumns, boardSize, lightColor, darkColor);
+        stackPane.getChildren().add(checkerBoard.build());
     }
 
     public void ready(Stage stage, Scene scene) {
@@ -80,30 +103,8 @@ public class CheckerGridFXMLController implements Initializable {
         }
         drawBoard();
     }
+    
 
-    //Called everytime a new grid is needed
-    // use padding to center board
-    private void drawBoard() {     
-        double sceneWidth = scene.getWidth();
-        double sceneHeight = scene.getHeight();
-        double horizontalPadding = 0.0;
-        double verticalPadding = 0.0;
-        
-        if (sceneWidth > sceneHeight) {
-            boardSize = sceneHeight;
-            horizontalPadding = (sceneWidth - boardSize) / 2;
-            verticalPadding = 0.0;
-        } else {
-            boardSize = sceneWidth;
-            verticalPadding = (sceneHeight - boardSize) / 2;
-            horizontalPadding = 0.0;
-        }
-        
-        stackPane.setPadding(new Insets(verticalPadding, horizontalPadding, verticalPadding, horizontalPadding));
-        stackPane.getChildren().clear();
-        checkerBoard = new Grid(numRowsColumns, boardSize, lightColor, darkColor);
-        stackPane.getChildren().add(checkerBoard.build());
-    }
 
     @FXML
     public void setBoardColorScheme(ActionEvent event) {
@@ -116,6 +117,14 @@ public class CheckerGridFXMLController implements Initializable {
                 DefaultColorScheme();
         }
         drawBoard();
+    }
+    @FXML
+    public void handleAboutButton(ActionEvent event) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Checkerboard");
+        alert.setHeaderText("Checker Board Info");
+        alert.setContentText("This application was developed by Moesaeah King for CS4330 at the University of Missouri.");
+        alert.showAndWait();
     }
 
     private void DefaultColorScheme() {

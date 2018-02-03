@@ -22,7 +22,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="About">
                <items>
-                  <MenuItem id="16 x 16" mnemonicParsing="false" onAction="#selectSize" text="About" />
+                  <MenuItem id="16 x 16" mnemonicParsing="false" onAction="#handleAboutButton" text="About" />
                </items>
           </Menu>
         </menus>
